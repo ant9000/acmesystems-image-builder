@@ -1,0 +1,71 @@
+{{- $arch  := or .arch  "armhf" -}}
+{{- $suite := or .suite "stretch" -}}
+{{- $board := or .board "roadrunner" -}}
+{{- $image := or .image (printf "debian-%s-%s.img" $suite $arch) -}}
+
+architecture: {{ $arch }}
+
+actions:
+  - action: run
+    description: fix DNS inside container
+    script: /bin/ln -sf /run/systemd/resolve/resolv.conf /etc/resolv.conf 
+
+  - action: debootstrap
+    description: create basic Debian filesystem
+    suite: {{ $suite }}
+    components:
+      - main
+    mirror: http://cdn.debian.net/debian/
+    variant: minbase
+
+  - action: apt
+    description: add extra packages
+    packages: [ sudo, adduser, systemd-sysv, openssh-server ]
+
+  - action: run
+    description: set hostname
+    chroot: true
+    command: echo debian-{{ $suite }}-{{ $arch }} > /etc/hostname
+
+  - action: run
+    description: add a new user
+    chroot: true
+    script: scripts/setup-user.sh
+
+  - action: overlay
+    description: configure new user for sudo
+    source: overlays/sudo
+
+  - action: overlay
+    description: add kernel, dtb and modules
+    source: overlays/{{ $board }}
+
+  - action: image-partition
+    description: create a partitioned image
+    imagename: {{ $image }}
+    imagesize: 1GB
+    partitiontype: msdos
+    mountpoints:
+      - mountpoint: /
+        partition: rootfs
+      - mountpoint: /boot
+        partition: boot
+        options: [ x-systemd.automount ]
+    partitions:
+      - name: boot
+        fs: fat32
+        start: 0%
+        end: 100MB
+        flags: [ boot ]
+      - name: rootfs
+        fs: ext4
+        start: 100MB
+        end: 100%
+
+  - action: filesystem-deploy
+    description: deploying filesystem onto image
+
+  - action: pack
+    description: compress image
+    file: {{ $image }}.gz
+    compression: gz

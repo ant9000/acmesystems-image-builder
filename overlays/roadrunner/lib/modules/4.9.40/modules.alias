@@ -1,0 +1,4 @@
+# Aliases extracted from modules themselves.
+alias crypto-echainiv echainiv
+alias echainiv echainiv
+alias net-pf-38 af_alg

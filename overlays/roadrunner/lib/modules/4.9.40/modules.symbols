@@ -1,0 +1,22 @@
+# Aliases for symbols, used by symbol_request().
+alias symbol:af_alg_release af_alg
+alias symbol:af_alg_make_sg af_alg
+alias symbol:af_alg_cmsg_send af_alg
+alias symbol:eeprom_93cx6_wren eeprom_93cx6
+alias symbol:af_alg_link_sg af_alg
+alias symbol:eeprom_93cx6_multiread eeprom_93cx6
+alias symbol:af_alg_wait_for_completion af_alg
+alias symbol:crc_itu_t_table crc_itu_t
+alias symbol:eeprom_93cx6_readb eeprom_93cx6
+alias symbol:eeprom_93cx6_write eeprom_93cx6
+alias symbol:crc_ccitt crc_ccitt
+alias symbol:af_alg_release_parent af_alg
+alias symbol:af_alg_complete af_alg
+alias symbol:af_alg_register_type af_alg
+alias symbol:af_alg_free_sg af_alg
+alias symbol:crc_itu_t crc_itu_t
+alias symbol:af_alg_accept af_alg
+alias symbol:af_alg_unregister_type af_alg
+alias symbol:eeprom_93cx6_read eeprom_93cx6
+alias symbol:eeprom_93cx6_multireadb eeprom_93cx6
+alias symbol:crc_ccitt_table crc_ccitt
