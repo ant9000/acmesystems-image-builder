@@ -1,7 +1,11 @@
-{{- $arch  := or .arch  "armhf" -}}
-{{- $suite := or .suite "stretch" -}}
-{{- $board := or .board "roadrunner" -}}
-{{- $image := or .image (printf "debian-%s-%s.img" $suite $arch) -}}
+{{- $arch     := or .arch   "armhf" -}}
+{{- $suite    := or .suite  "stretch" -}}
+{{- $board    := or .board  "roadrunner" -}}
+{{- $locale   := or .locale "en_US" -}}
+{{- $user     := or .user   "acme" -}}
+{{- $pass     := or .pass   "acmesystems" -}}
+{{- $hostname := or .hname  (printf "debian-%s-%s" $suite $arch) -}}
+{{- $image    := or .image  (printf "%s.img" $hostname) -}}
 
 architecture: {{ $arch }}
 
@@ -20,25 +24,45 @@ actions:
 
   - action: apt
     description: add extra packages
-    packages: [ sudo, adduser, systemd-sysv, openssh-server ]
+    packages: [
+        sudo, adduser, systemd-sysv, udev, dnsutils, ifupdown, iproute2,
+        iputils-ping, udhcpc, netbase, net-tools, ethtool, openssh-server,
+        lsb-release, locales, dialog, file, usbutils, nano, less, tree,
+        vim-tiny, screen, rsync, curl, wget, zip, unzip
+    ]
+
+  - action: run
+    description: cleanup packages after install
+    chroot: true
+    command: apt clean
 
   - action: run
     description: set hostname
     chroot: true
-    command: echo debian-{{ $suite }}-{{ $arch }} > /etc/hostname
+    command: echo {{ $hostname }} > /etc/hostname
 
   - action: run
-    description: add a new user
+    description: set hosts file
     chroot: true
-    script: scripts/setup-user.sh
+    script: scripts/setup-hosts.sh {{ $hostname }}
+
+  - action: run
+    description: set default locale
+    chroot: true
+    script: scripts/setup-locale.sh {{ $locale }}
 
   - action: overlay
-    description: configure new user for sudo
-    source: overlays/sudo
+    description: configure eth0 for dhcp
+    source: overlays/network
+
+  - action: run
+    description: add a new user (will be in sudoers)
+    chroot: true
+    script: scripts/setup-user.sh {{ $user }} "{{ $pass }}"
 
   - action: overlay
     description: add kernel, dtb and modules
-    source: overlays/{{ $board }}
+    source: overlays/kernel/{{ $board }}
 
   - action: image-partition
     description: create a partitioned image
@@ -48,9 +72,9 @@ actions:
     mountpoints:
       - mountpoint: /
         partition: rootfs
+        options: [ noatime ]
       - mountpoint: /boot
         partition: boot
-        options: [ x-systemd.automount ]
     partitions:
       - name: boot
         fs: fat32
@@ -64,8 +88,3 @@ actions:
 
   - action: filesystem-deploy
     description: deploying filesystem onto image
-
-  - action: pack
-    description: compress image
-    file: {{ $image }}.gz
-    compression: gz
