@@ -28,7 +28,7 @@ actions:
         sudo, adduser, systemd-sysv, udev, dnsutils, ifupdown, iproute2,
         iputils-ping, udhcpc, netbase, net-tools, ethtool, openssh-server,
         lsb-release, locales, dialog, file, usbutils, nano, less, tree,
-        vim-tiny, screen, rsync, curl, wget, zip, unzip
+        vim-tiny, screen, rsync, curl, wget, zip, unzip, cloud-guest-utils
     ]
 
   - action: run
@@ -59,6 +59,10 @@ actions:
     description: add a new user (will be in sudoers)
     chroot: true
     script: scripts/setup-user.sh {{ $user }} "{{ $pass }}"
+
+  - action: overlay
+    description: command for extending rootfs partition
+    source: overlays/growfs
 
   - action: overlay
     description: add kernel, dtb and modules
