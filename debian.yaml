@@ -4,8 +4,8 @@
 {{- $locale   := or .locale "en_US" -}}
 {{- $user     := or .user   "acme" -}}
 {{- $pass     := or .pass   "acmesystems" -}}
-{{- $hostname := or .hname  (printf "debian-%s-%s" $suite $arch) -}}
-{{- $image    := or .image  (printf "%s.img" $hostname) -}}
+{{- $hostname := or .hname  (printf "%s" $board) -}}
+{{- $image    := or .hname  (printf "debian-%s-%s.img" $suite $board) -}}
 
 architecture: {{ $arch }}
 
