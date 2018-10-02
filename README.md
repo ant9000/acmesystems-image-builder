@@ -17,6 +17,16 @@ $GOPATH/bin/debos debian.yaml
 dd if=debian-stretch-armhf.img of=/dev/mmcblk0 bs=1M
 ```
 
+There are a few configurable parameters in debian.yaml; for instance, let's
+create an image for arietta:
+
+```
+$GOPATH/bin/debos -t board:arietta -t arch:armel debian.yaml
+```
+
+Look at debian.yaml to see what's available.
+
+
 LINKS
 -----
 
