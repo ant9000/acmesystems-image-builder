@@ -5,17 +5,40 @@ Install prerequisites:
 
 ```
 sudo apt install golang git libglib2.0-dev libostree-dev qemu-system-x86 \
-     qemu-user-static debootstrap systemd-container
+     qemu-user-static debootstrap systemd-container xz-utils bmap-tools
 export GOPATH=`pwd`/gocode
 go get -u github.com/go-debos/debos/cmd/debos
 ```
 
-Example run, assuming your SD card is /dev/mmcblk0:
+USAGE
+-----
+
+Example run:
 
 ```
 $GOPATH/bin/debos debian.yaml
-dd if=debian-stretch-armhf.img of=/dev/mmcblk0 bs=1M
 ```
+
+will create two outputs:
+
+- debian-stretch-roadrunner.img.xz, an xz-compressed image file for a Roadrunner board,
+- debian-stretch-roadrunner.img.bmap, a bitmap summary for faster flashing via bmaptools
+
+To flash it, assuming your SD card is /dev/mmcblk0, use:
+
+```
+bmaptool copy debian-stretch-roadrunner.img.xz /dev/mmcblk0
+```
+
+The bmap file is automatically looked for in the current directory - if missing, bmaptool
+will behave like dd. You could use plain dd as well, with:
+
+```
+xz -cd debian-stretch-roadrunner.img.xz | dd of=/dev/mmcblk0 bs=1M
+```
+
+CONFIGURATION
+-------------
 
 There are a few configurable parameters in debian.yaml; for instance, let's
 create an image for arietta:
