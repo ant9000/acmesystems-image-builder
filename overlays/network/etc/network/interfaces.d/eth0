@@ -1,4 +1,4 @@
 auto eth0
 allow-hotplug eth0
 iface eth0 inet dhcp
-  up udhcpc -F `hostname`
+  up udhcpc -n -q -F `hostname`
