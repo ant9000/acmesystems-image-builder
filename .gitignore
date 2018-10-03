@@ -1,4 +1,5 @@
 gocode/*
 .*.swp
 *.img
-*.img.gz
+*.img.xz
+*.img.bmap
