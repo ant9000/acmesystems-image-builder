@@ -3,3 +3,4 @@ gocode/*
 *.img
 *.img.xz
 *.img.bmap
+*.tgz

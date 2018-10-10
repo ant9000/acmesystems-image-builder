@@ -1,0 +1,66 @@
+{{- $arch     := or .arch   "armhf" -}}
+{{- $suite    := or .suite  "stretch" -}}
+{{- $board    := or .board  "roadrunner" -}}
+{{- $hostname := or .hname  (printf "%s" $board) -}}
+{{- $pack     := or .pack   (printf "debian-%s-%s.tgz" $suite $arch) -}}
+{{- $image    := or .image  (printf "debian-%s-%s.img" $suite $board) -}}
+
+architecture: {{ $arch }}
+
+actions:
+  - action: unpack
+    file: {{ $pack }}
+    compression: gz
+
+  - action: run
+    description: fix DNS inside container
+    script: /bin/ln -sf /run/systemd/resolve/resolv.conf /etc/resolv.conf 
+
+  - action: run
+    description: set hostname
+    chroot: true
+    command: echo {{ $hostname }} > /etc/hostname
+
+  - action: run
+    description: set hosts file
+    chroot: true
+    script: scripts/setup-hosts.sh {{ $hostname }}
+
+  - action: overlay
+    description: add kernel, dtb and modules
+    source: overlays/kernel/{{ $board }}
+
+  - action: image-partition
+    description: create a partitioned image
+    imagename: {{ $image }}
+    imagesize: 1GB
+    partitiontype: msdos
+    mountpoints:
+      - mountpoint: /
+        partition: rootfs
+        options: [ noatime ]
+      - mountpoint: /boot
+        partition: boot
+    partitions:
+      - name: boot
+        fs: fat32
+        start: 0%
+        end: 100MB
+        flags: [ boot ]
+      - name: rootfs
+        fs: ext4
+        start: 100MB
+        end: 100%
+
+  - action: filesystem-deploy
+    description: deploying filesystem onto image
+
+  - action: run
+    description: obtain a bitmap file for faster flashing
+    postprocess: true
+    command: bmaptool create {{ $image }} -o {{ $image }}.bmap
+
+  - action: run
+    description: compress the image
+    postprocess: true
+    command: xz -f {{ $image }}
