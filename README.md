@@ -49,6 +49,16 @@ $GOPATH/bin/debos -t board:arietta -t arch:armel debian.yaml
 
 Look at debian.yaml to see what's available.
 
+EXTRAS
+------
+
+There is a script that can be used to produce the images for roadrunner, acqua, aria and arietta
+all at once:
+
+```
+./acmesystems_build_all_images.sh
+```
+
 
 LINKS
 -----
