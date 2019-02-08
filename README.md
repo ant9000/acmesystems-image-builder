@@ -23,7 +23,7 @@ Install prerequisites and enable local caching resolver:
 ```
 sudo apt install golang git libglib2.0-dev libostree-dev qemu-system-x86 \
      build-essential qemu-user-static debootstrap systemd-container \
-     binfmt-support policykit-1 xz-utils bmap-tools
+     binfmt-support policykit-1 parted xz-utils bmap-tools
 sudo systemctl start systemd-resolved
 export GOPATH=`pwd`/gocode
 go get -u github.com/go-debos/debos/cmd/debos
