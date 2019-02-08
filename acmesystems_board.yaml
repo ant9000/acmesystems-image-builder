@@ -13,10 +13,6 @@ actions:
     compression: gz
 
   - action: run
-    description: fix DNS inside container
-    script: host www.google.com >/dev/null || /bin/ln -sf /run/systemd/resolve/resolv.conf /etc/resolv.conf
-
-  - action: run
     description: set hostname
     chroot: true
     command: echo {{ $hostname }} > /etc/hostname

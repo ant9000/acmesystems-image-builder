@@ -10,10 +10,6 @@
 architecture: {{ $arch }}
 
 actions:
-  - action: run
-    description: fix DNS inside container
-    script: host www.google.com >/dev/null || /bin/ln -sf /run/systemd/resolve/resolv.conf /etc/resolv.conf
-
   - action: debootstrap
     description: create basic Debian filesystem
     suite: {{ $suite }}
