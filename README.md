@@ -1,12 +1,30 @@
+DESCRIPTION
+-----------
+
+This repository contains recipes to prepare Debian images adapted for Acmesystems's embedded boards. We leverage Debos, a tool that integrates debootstrap and offers a very readable configuration via .yaml files.
+
+REQUIREMENTS
+------------
+The following recipes have been tested on Debian Stretch: on other Debian versions your mileage might vary. Debos is a very promising but still young project; its support for Ubuntu is in the works but not yet ready.
+
+Since Debos uses a virtualization technology (via fakemachine) to isolate itself from the underlying OS, running these recipes inside a VM requires special care.
+
+Basically you have two choices:
+- enabling nested VM support in your virtualizer;
+- launching the debos commands as root with sudo.
+
+Nested virtualization support will be slower, but maintains the build process well isolated from your system. The sudo way, on the other hand, while being faster might expose you to potentially dangerous bugs. If you follow that route, you'd better make sure that your VM serve *only* for the task at hand.
+
 INSTALL
 -------
 
-Install prerequisites:
+Install prerequisites and enable local caching resolver:
 
 ```
 sudo apt install golang git libglib2.0-dev libostree-dev qemu-system-x86 \
      build-essential qemu-user-static debootstrap systemd-container \
      xz-utils bmap-tools
+sudo systemctl start systemd-resolved
 export GOPATH=`pwd`/gocode
 go get -u github.com/go-debos/debos/cmd/debos
 ```
@@ -28,14 +46,14 @@ will create two outputs:
 To flash it, assuming your SD card is /dev/mmcblk0, use:
 
 ```
-bmaptool copy debian-stretch-roadrunner.img.xz /dev/mmcblk0
+sudo bmaptool copy debian-stretch-roadrunner.img.xz /dev/mmcblk0
 ```
 
 The bmap file is automatically looked for in the current directory - if missing, bmaptool
 will behave like dd. You could use plain dd as well, with:
 
 ```
-xz -cd debian-stretch-roadrunner.img.xz | dd of=/dev/mmcblk0 bs=1M
+xz -cd debian-stretch-roadrunner.img.xz | sudo dd of=/dev/mmcblk0 bs=1M
 ```
 
 CONFIGURATION
