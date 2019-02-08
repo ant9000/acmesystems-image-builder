@@ -14,7 +14,7 @@ actions:
 
   - action: run
     description: fix DNS inside container
-    script: /bin/ln -sf /run/systemd/resolve/resolv.conf /etc/resolv.conf 
+    script: host www.google.com >/dev/null || /bin/ln -sf /run/systemd/resolve/resolv.conf /etc/resolv.conf
 
   - action: run
     description: set hostname
