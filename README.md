@@ -24,10 +24,13 @@ Install prerequisites and enable local caching resolver:
 sudo apt install golang git libglib2.0-dev libostree-dev qemu-system-x86 \
      build-essential qemu-user-static debootstrap systemd-container \
      binfmt-support policykit-1 parted dosfstools xz-utils bmap-tools
+sudo adduser $USER kvm
 sudo systemctl start systemd-resolved
 export GOPATH=`pwd`/gocode
 go get -u github.com/go-debos/debos/cmd/debos
 ```
+
+If your user was not already in group `kvm`, you will need to logout and login again. For the current shell only you can inform the system of your new group membership with the command `newgrp kvm`.
 
 USAGE
 -----
