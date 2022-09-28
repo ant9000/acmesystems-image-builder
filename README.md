@@ -18,16 +18,16 @@ Nested virtualization support will be slower, but maintains the build process we
 INSTALL
 -------
 
-Install prerequisites and enable local caching resolver:
+Install prerequisites and enable local caching resolver (make sure you have backports repo enabled):
 
 ```
-sudo apt install golang git libglib2.0-dev libostree-dev qemu-system-x86 \
+sudo apt install git libglib2.0-dev libostree-dev qemu-system-x86 \
      build-essential qemu-user-static debootstrap systemd-container \
      binfmt-support policykit-1 parted dosfstools xz-utils bmap-tools
+sudo apt install -t bullseye-backports golang
 sudo adduser $USER kvm
 sudo systemctl start systemd-resolved
-export GOPATH=`pwd`/gocode
-go get -u github.com/go-debos/debos/cmd/debos
+GOPATH=`pwd`/gocode go install -v github.com/go-debos/debos/cmd/debos@latest
 ```
 
 If your user was not already in group `kvm`, you will need to logout and login again. For the current shell only you can inform the system of your new group membership with the command `newgrp kvm`.
