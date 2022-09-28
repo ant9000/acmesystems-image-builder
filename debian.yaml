@@ -61,6 +61,10 @@ actions:
     source: overlays/growfs
 
   - action: overlay
+    description: command for fixing serial console terminal size
+    source: overlays/fixterm
+
+  - action: overlay
     description: add kernel, dtb and modules
     source: overlays/kernel/{{ $board }}
 

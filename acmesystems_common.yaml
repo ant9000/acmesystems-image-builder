@@ -59,6 +59,10 @@ actions:
     description: command for extending rootfs partition
     source: overlays/growfs
 
+  - action: overlay
+    description: command for fixing serial console terminal size
+    source: overlays/fixterm
+
   - action: pack
     file: {{ $image }}
     compression: gz
