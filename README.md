@@ -43,20 +43,20 @@ $GOPATH/bin/debos debian.yaml
 
 will create two outputs:
 
-- debian-stretch-roadrunner.img.xz, an xz-compressed image file for a Roadrunner board,
-- debian-stretch-roadrunner.img.bmap, a bitmap summary for faster flashing via bmaptools
+- debian-stable-roadrunner.img.xz, an xz-compressed image file for a Roadrunner board,
+- debian-stable-roadrunner.img.bmap, a bitmap summary for faster flashing via bmaptools
 
 To flash it, assuming your SD card is /dev/mmcblk0, use:
 
 ```
-sudo bmaptool copy debian-stretch-roadrunner.img.xz /dev/mmcblk0
+sudo bmaptool copy debian-stable-roadrunner.img.xz /dev/mmcblk0
 ```
 
 The bmap file is automatically looked for in the current directory - if missing, bmaptool
 will behave like dd. You could use plain dd as well, with:
 
 ```
-xz -cd debian-stretch-roadrunner.img.xz | sudo dd of=/dev/mmcblk0 bs=1M
+xz -cd debian-stable-roadrunner.img.xz | sudo dd of=/dev/mmcblk0 bs=1M
 ```
 
 CONFIGURATION
