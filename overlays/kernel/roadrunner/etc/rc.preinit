@@ -1,0 +1,1 @@
+echo "Showing off rc.preinit hook"
