@@ -25,7 +25,7 @@ actions:
         iputils-ping, udhcpc, netbase, net-tools, ethtool, openssh-server,
         lsb-release, locales, dialog, file, usbutils, nano, less, tree,
         vim-tiny, screen, rsync, curl, wget, zip, unzip, cloud-guest-utils,
-        ntpdate, device-tree-compiler
+        ntpdate, device-tree-compiler, fdisk
     ]
 
   - action: run
