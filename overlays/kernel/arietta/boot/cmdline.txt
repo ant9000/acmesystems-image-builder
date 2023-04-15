@@ -1,0 +1,1 @@
+mem=128M console=ttyS0,115200 root=/dev/mmcblk0p2 rw rootfstype=ext4 rootwait net.ifnames=0
