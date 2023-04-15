@@ -1,5 +1,5 @@
 {{- $arch     := or .arch   "armhf" -}}
-{{- $suite    := or .suite  "stretch" -}}
+{{- $suite    := or .suite  "bullseye" -}}
 {{- $board    := or .board  "roadrunner" -}}
 {{- $hostname := or .hname  (printf "%s" $board) -}}
 {{- $pack     := or .pack   (printf "debian-%s-%s.tgz" $suite $arch) -}}
