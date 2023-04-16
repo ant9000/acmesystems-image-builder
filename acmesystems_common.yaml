@@ -4,7 +4,7 @@
 {{- $user     := or .user     "acme" -}}
 {{- $pass     := or .pass     "acmesystems" -}}
 {{- $hostname := or .hostname (printf "debian-%s-%s" $suite $arch) -}}
-{{- $image    := or .image    (printf "debian-%s-%s.tgz" $suite $arch) -}}
+{{- $pack     := or .pack     (printf "debian-%s-%s.tgz" $suite $arch) -}}
 
 architecture: {{ $arch }}
 
@@ -24,7 +24,7 @@ actions:
         iputils-ping, udhcpc, netbase, net-tools, ethtool, openssh-server,
         lsb-release, locales, dialog, file, usbutils, nano, less, tree,
         vim-tiny, screen, rsync, curl, wget, zip, unzip, cloud-guest-utils,
-        ntpdate, device-tree-compiler, fdisk
+        systemd-timesyncd, device-tree-compiler, fdisk
     ]
 
   - action: run
@@ -65,5 +65,5 @@ actions:
     source: overlays/fixterm
 
   - action: pack
-    file: {{ $image }}
+    file: {{ $pack }}
     compression: gz
