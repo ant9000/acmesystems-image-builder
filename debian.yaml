@@ -28,7 +28,7 @@ actions:
         iputils-ping, udhcpc, netbase, net-tools, ethtool, openssh-server,
         lsb-release, locales, dialog, file, usbutils, nano, less, tree,
         vim-tiny, screen, rsync, curl, wget, zip, unzip, cloud-guest-utils,
-        systemd-timesyncd, device-tree-compiler, fdisk
+        systemd-timesyncd, device-tree-compiler, fdisk, network-manager
     ]
 
   - action: run
@@ -50,10 +50,6 @@ actions:
     description: set default locale
     chroot: true
     script: scripts/setup-locale.sh {{ $locale }}
-
-  - action: overlay
-    description: configure eth0 for dhcp
-    source: overlays/network
 
   - action: run
     description: add a new user (will be in sudoers)
