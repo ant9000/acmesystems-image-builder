@@ -1,9 +1,9 @@
 #!/bin/bash
 
-gocode/bin/debos acmesystems_common.yaml
-gocode/bin/debos -t board:roadrunner acmesystems_board.yaml
-gocode/bin/debos -t board:acqua acmesystems_board.yaml
+gocode/bin/debos -t stage:common debian.yaml
+gocode/bin/debos -t stage:board -t board:roadrunner debian.yaml
+gocode/bin/debos -t stage:board -t board:acqua debian.yaml
 
-gocode/bin/debos -t arch:armel acmesystems_common.yaml
-gocode/bin/debos -t arch:armel -t board:aria acmesystems_board.yaml
-gocode/bin/debos -t arch:armel -t board:arietta acmesystems_board.yaml
+gocode/bin/debos -t stage:common -t arch:armel debian.yaml
+gocode/bin/debos -t stage:board -t arch:armel -t board:aria debian.yaml
+gocode/bin/debos -t stage:board -t arch:armel -t board:arietta debian.yaml

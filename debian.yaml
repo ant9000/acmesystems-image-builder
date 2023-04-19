@@ -1,3 +1,4 @@
+{{- $stage    := or .stage    "full" -}}
 {{- $arch     := or .arch     "armhf" -}}
 {{- $suite    := or .suite    "bullseye" -}}
 {{- $board    := or .board    "roadrunner" -}}
@@ -5,11 +6,13 @@
 {{- $user     := or .user     "acme" -}}
 {{- $pass     := or .pass     "acmesystems" -}}
 {{- $hostname := or .hostname (printf "%s" $board) -}}
+{{- $pack     := or .pack     (printf "debian-%s-%s.tgz" $suite $arch) -}}
 {{- $image    := or .image    (printf "debian-%s-%s.img" $suite $board) -}}
 
 architecture: {{ $arch }}
 
 actions:
+{{if or (eq $stage "common") (eq $stage "full")}}
   - action: debootstrap
     description: create basic Debian filesystem
     suite: {{ $suite }}
@@ -65,6 +68,20 @@ actions:
     description: command for fixing serial console terminal size
     source: overlays/fixterm
 
+{{if eq $stage "common"}}
+  - action: pack
+    file: {{ $pack }}
+    compression: gz
+{{end}}
+{{end}}
+
+{{if or (eq $stage "board") (eq $stage "full")}}
+{{if eq $stage "board"}}
+  - action: unpack
+    file: {{ $pack }}
+    compression: gz
+{{end}}
+
   - action: overlay
     description: add kernel, dtb and modules
     source: overlays/kernel/{{ $board }}
@@ -103,3 +120,4 @@ actions:
     description: compress the image
     postprocess: true
     command: xz -f {{ $image }}
+{{end}}
