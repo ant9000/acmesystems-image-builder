@@ -115,5 +115,5 @@ actions:
   - action: run
     description: compress the image
     postprocess: true
-    command: xz -f {{ $image }}
+    command: xz -T0 -f {{ $image }}
 {{end}}
