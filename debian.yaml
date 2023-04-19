@@ -82,6 +82,11 @@ actions:
     description: add board specific files
     source: overlays/boards/{{ $board }}
 
+  - action: run
+    description: NM connections must be readable by root only
+    chroot: true
+    command: find /etc/NetworkManager/system-connections/ -type f -exec chmod 600 {} \+
+
   - action: image-partition
     description: create a partitioned image
     imagename: {{ $image }}
