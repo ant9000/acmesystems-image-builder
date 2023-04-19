@@ -79,8 +79,8 @@ actions:
 {{end}}
 
   - action: overlay
-    description: add kernel, dtb and modules
-    source: overlays/kernel/{{ $board }}
+    description: add board specific files
+    source: overlays/boards/{{ $board }}
 
   - action: image-partition
     description: create a partitioned image
