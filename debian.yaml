@@ -37,16 +37,6 @@ actions:
     command: apt clean
 
   - action: run
-    description: set hostname
-    chroot: true
-    command: echo {{ $hostname }} > /etc/hostname
-
-  - action: run
-    description: set hosts file
-    chroot: true
-    script: scripts/setup-hosts.sh {{ $hostname }}
-
-  - action: run
     description: set default locale
     chroot: true
     script: scripts/setup-locale.sh {{ $locale }}
@@ -77,6 +67,16 @@ actions:
     file: {{ $pack }}
     compression: gz
 {{end}}
+
+  - action: run
+    description: set hostname
+    chroot: true
+    command: echo {{ $hostname }} > /etc/hostname
+
+  - action: run
+    description: set hosts file
+    chroot: true
+    script: scripts/setup-hosts.sh {{ $hostname }}
 
   - action: overlay
     description: add board specific files
