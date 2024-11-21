@@ -1,0 +1,8 @@
+#!/bin/busybox sh
+
+if [ -f /etc/rc.preinit ]; then
+  echo "Sourcing preinit script"
+  . /etc/rc.preinit
+  echo "Now handing off boot to init"
+fi
+exec /sbin/init

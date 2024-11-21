@@ -1,6 +1,6 @@
 {{- $stage    := or .stage    "full" -}}
 {{- $arch     := or .arch     "armhf" -}}
-{{- $suite    := or .suite    "bullseye" -}}
+{{- $suite    := or .suite    "bookworm" -}}
 {{- $board    := or .board    "roadrunner" -}}
 {{- $locale   := or .locale   "en_US" -}}
 {{- $user     := or .user     "acme" -}}

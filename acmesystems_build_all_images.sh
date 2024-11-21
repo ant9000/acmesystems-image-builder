@@ -1,6 +1,7 @@
 #!/bin/bash
 
 gocode/bin/debos -t stage:common debian.yaml
+gocode/bin/debos -t stage:board -t board:foxd27 debian.yaml
 gocode/bin/debos -t stage:board -t board:roadrunner debian.yaml
 gocode/bin/debos -t stage:board -t board:acqua debian.yaml
 
