@@ -18,7 +18,7 @@ actions:
     suite: {{ $suite }}
     components:
       - main
-    mirror: http://cdn.debian.net/debian/
+    mirror: https://deb.debian.org/debian/
     variant: minbase
 
   - action: apt
